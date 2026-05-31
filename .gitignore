@@ -73,3 +73,24 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# VS Code
+.vscode/
+
+# Ruby / Bundler
+.bundle/
+
+# Logs
+*.log
+logs/
+
+# OS
+Thumbs.db
