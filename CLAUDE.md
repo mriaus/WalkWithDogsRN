@@ -6,11 +6,12 @@ Type `/` in Claude Code to see all available commands, or use these directly:
 
 | Command | What it does |
 |---------|-------------|
-| `/browse-agents` | 📋 List all available agents |
-| `/jira-task-creator` | 📝 Create a Jira ticket from a description |
+| `/user-story-creator` | 📋 Elicit requirements + generate BDD user stories |
+| `/jira-task-creator` | 📝 Create Jira tickets (epic + subtasks) |
 | `/dev-agent` | 💻 Implement a Jira ticket (full cycle) |
 | `/qa-agent` | ✅ Run QA on a ticket |
 | `/release-manager` | 🚀 Prepare and execute a release |
+| `/browse-agents` | 📋 List all available agents |
 
 ---
 
@@ -183,19 +184,38 @@ Type the command directly:
 **Option 3: Quick reference**
 See the table at the top of this file under "Quick Commands"
 
+### 0. User Story Creator
+
+**Command**: `/user-story-creator`
+
+Product analyst that elicits requirements through questions and maps all use cases (happy path, error, edge, border, offline, permissions) before any ticket is created. Produces a structured specification with user stories and BDD acceptance criteria ready to feed into `jira-task-creator`.
+
+**Use when**: You have a feature idea but requirements are not yet fully defined.
+
+**Example**:
+```
+/user-story-creator
+User: "add push notifications for walk updates"
+→ Explores project → Asks questions → Maps all use cases → Outputs specification
+```
+
+**Output**: A specification document with user stories, BDD Given/When/Then criteria across 7 use case categories. Pass this document directly to `/jira-task-creator`.
+
+---
+
 ### 1. Jira Task Creator
 
 **Command**: `/jira-task-creator`
 
-Creates well-structured Jira tickets from natural language descriptions. Inspects your code to add real file paths and technical context.
+Creates Jira tickets (epic + subtasks) from a complete specification. Expects acceptance criteria and mapped use cases as input (from `/user-story-creator` or manually written).
 
-**Use when**: You have a feature request, bug report, or enhancement idea.
+**Use when**: You have a complete specification with requirements already defined and acceptance criteria.
 
 **Example**:
 ```
 /jira-task-creator
-User: "add dog profile screen with image upload and breed selector"
-→ Creates WALKWITHDOGS-XX with full acceptance criteria, examples, and file paths
+User: [pastes specification from user-story-creator]
+→ Creates WALKWITHDOGS-XX (epic) + subtasks for each user story
 ```
 
 ---
@@ -263,28 +283,35 @@ User: "prepare the release"
 
 ## Typical Workflow
 
-1. **Feature Request**
+1. **Requirements**
    ```
-   /jira-task-creator
-   → Describe what you want
-   → Ticket created in Jira (e.g., WALKWITHDOGS-42)
+   /user-story-creator
+   → Describe the feature idea
+   → Outputs specification with user stories and BDD criteria
    ```
 
-2. **Implementation**
+2. **Jira Tickets**
+   ```
+   /jira-task-creator
+   → Paste the specification from user-story-creator
+   → Tickets created (epic + subtasks for each story)
+   ```
+
+3. **Implementation**
    ```
    /dev-agent
    User: "implement WALKWITHDOGS-42"
    → Full code + tests + PR
    ```
 
-3. **Validation**
+4. **Validation**
    ```
    /qa-agent
    User: "QA WALKWITHDOGS-42"
    → Bug hunt + accessibility review + Jira report
    ```
 
-4. **Release**
+5. **Release**
    ```
    /release-manager
    User: "prepare the release"
@@ -321,10 +348,11 @@ If you want to restrict permissions, edit `~/.claude/settings.json` and set `byp
 
 ### Adding a New Feature
 
-1. **Create a Jira ticket** (use `/jira-task-creator` or Jira UI directly).
-2. **Implement** with `/dev-agent PROJ-X`.
-3. **QA** with `/qa-agent PROJ-X` before merge.
-4. **Release** when ready with `/release-manager`.
+1. **Define requirements** with `/user-story-creator` → describe the feature idea.
+2. **Create Jira tickets** with `/jira-task-creator` → paste the spec output.
+3. **Implement** with `/dev-agent PROJ-X`.
+4. **QA** with `/qa-agent PROJ-X` before merge.
+5. **Release** when ready with `/release-manager`.
 
 ### Adding a New Screen
 
