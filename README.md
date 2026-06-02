@@ -4,6 +4,28 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 > **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
+## Clone the repository
+
+This project uses git submodules. Use one of the following methods to clone it:
+
+**Option A — clone and initialise submodules in one step (recommended):**
+
+```sh
+git clone --recurse-submodules <repo-url>
+```
+
+**Option B — if you already cloned without submodules:**
+
+```sh
+git submodule update --init --recursive
+```
+
+**Keeping submodules up to date** after pulling changes:
+
+```sh
+git pull --recurse-submodules
+```
+
 ## Step 1: Start Metro
 
 First, you will need to run **Metro**, the JavaScript build tool for React Native.
